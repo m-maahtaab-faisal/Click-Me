@@ -1,0 +1,88 @@
+body{
+  margin:0;
+  height:100vh;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  font-family:sans-serif;
+  color:white;
+  overflow:hidden;
+}
+
+.hidden{display:none;}
+
+.top-bar{
+  position:absolute;
+  top:10px;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  padding:0 20px;
+}
+
+.center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+
+input{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+}
+
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:30px;
+  background:#ff2e2e;
+  color:white;
+  cursor:pointer;
+  transition:0.25s;
+}
+
+button:hover{
+  transform:scale(1.05);
+}
+
+/* GAME AREA FIX */
+#gameArea{
+  position:absolute;
+  bottom:50px;
+  left:50%;
+  transform:translateX(-50%);
+  width:80%;
+  height:40%;
+  border:2px dashed rgba(255,255,255,0.2);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+/* BUTTON INSIDE AREA */
+#btn{
+  position:absolute;
+  transition: all 0.25s ease;
+  animation:glow 1.5s infinite;
+}
+
+@keyframes glow{
+  0%{box-shadow:0 0 10px red;}
+  50%{box-shadow:0 0 25px red;}
+  100%{box-shadow:0 0 10px red;}
+}
+
+#leaderboard{
+  position:absolute;
+  right:20px;
+  top:80px;
+  font-size:14px;
+}
+
+#loading{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:26px;
+}
