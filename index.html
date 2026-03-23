@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Impossible Button</title>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  height:100vh;
+  font-family:sans-serif;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color:white;
+}
+
+/* Glow animation */
+@keyframes glow {
+  0% { box-shadow: 0 0 10px #ff3c3c; }
+  50% { box-shadow: 0 0 25px #ff3c3c, 0 0 40px #ff0000; }
+  100% { box-shadow: 0 0 10px #ff3c3c; }
+}
+
+#btn {
+  position:absolute;
+  padding:18px 40px;
+  font-size:18px;
+  background:#ff2e2e;
+  border:none;
+  border-radius:50px;
+  color:white;
+  cursor:pointer;
+  animation: glow 1.5s infinite;
+  transition: all 0.25s ease;
+}
+
+/* Hover effect */
+#btn:hover {
+  transform: scale(1.08);
+}
+
+#message {
+  position:absolute;
+  top:30px;
+  font-size:24px;
+  opacity:0.9;
+  letter-spacing:1px;
+}
+
+.fake {
+  position:absolute;
+  padding:18px 40px;
+  border-radius:50px;
+  background:#888;
+  opacity:0.6;
+}
+
+/* Timer */
+#timer {
+  position:absolute;
+  bottom:25px;
+  font-size:18px;
+  opacity:0.8;
+}
+</style>
+</head>
+
+<body>
+
+<div id="message">Try to click the button 😏</div>
+<button id="btn">Click Me</button>
+<div id="timer">⏱️ 0.0s</div>
+
+<script>
+const btn = document.getElementById("btn");
+const msg = document.getElementById("message");
+const timerEl = document.getElementById("timer");
+
+let level = 0;
+let gameWon = false;
+let startTime = Date.now();
+
+// 🔊 sound
+const clickSound = new Audio("https://www.soundjay.com/button/sounds/button-16.mp3");
+
+// 🏆 high score (local)
+let best = localStorage.getItem("bestTime");
+
+// ⏱️ timer
+setInterval(() => {
+  if (!gameWon) {
+    let t = ((Date.now() - startTime)/1000).toFixed(1);
+    timerEl.innerText = "⏱️ " + t + "s" + (best ? " | Best: " + best + "s" : "");
+  }
+}, 100);
+
+// 🎯 move
+function moveButton() {
+  if (gameWon) return;
+
+  const x = Math.random() * (window.innerWidth - btn.offsetWidth - 60);
+  const y = Math.random() * (window.innerHeight - btn.offsetHeight - 60);
+
+  btn.style.left = x + "px";
+  btn.style.top = y + "px";
+}
+
+// 🧠 dodge
+document.addEventListener("mousemove", (e) => {
+  if (level < 2) return;
+
+  const rect = btn.getBoundingClientRect();
+  const dist = Math.hypot(
+    e.clientX - (rect.left + rect.width/2),
+    e.clientY - (rect.top + rect.height/2)
+  );
+
+  if (dist < 90) moveButton();
+});
+
+// 📱 mobile
+document.addEventListener("touchstart", () => {
+  if (level >= 2) moveButton();
+});
+
+// 💥 shake effect
+function shake() {
+  document.body.style.transition = "0.1s";
+  document.body.style.transform = "translate(5px,5px)";
+  setTimeout(() => {
+    document.body.style.transform = "translate(-5px,-5px)";
+  }, 50);
+  setTimeout(() => {
+    document.body.style.transform = "none";
+  }, 100);
+}
+
+// ✨ particles
+function particles(x, y) {
+  for (let i=0;i<12;i++) {
+    const p = document.createElement("div");
+    p.style.position="absolute";
+    p.style.width="6px";
+    p.style.height="6px";
+    p.style.background="white";
+    p.style.borderRadius="50%";
+    p.style.left = x+"px";
+    p.style.top = y+"px";
+
+    document.body.appendChild(p);
+
+    const angle = Math.random()*2*Math.PI;
+    const dist = Math.random()*80;
+
+    p.animate([
+      { transform: "translate(0,0)", opacity:1 },
+      { transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`, opacity:0 }
+    ], { duration:600 });
+
+    setTimeout(()=>p.remove(),600);
+  }
+}
+
+// 🎯 click logic
+btn.addEventListener("click", (e) => {
+  if (gameWon) return;
+
+  clickSound.play();
+  level++;
+
+  particles(e.clientX, e.clientY);
+
+  if (level === 1) msg.innerText = "Nice 😏";
+
+  else if (level === 2) {
+    msg.innerText = "Now try 😈";
+    moveButton();
+  }
+
+  else if (level === 3) {
+    msg.innerText = "Focus 👀";
+    shake();
+    spawnFakes(2);
+  }
+
+  else if (level === 4) {
+    msg.innerText = "YOU WON!!! 🎉";
+    shake();
+
+    // 😈 fake win troll
+    setTimeout(() => {
+      msg.innerText = "Just kidding 😭 try again";
+      moveButton();
+    }, 1200);
+  }
+
+  else {
+    gameWon = true;
+
+    let finalTime = ((Date.now() - startTime)/1000).toFixed(1);
+
+    // 🏆 save best
+    if (!best || finalTime < best) {
+      localStorage.setItem("bestTime", finalTime);
+    }
+
+    msg.innerText = "🏆 You won in " + finalTime + "s";
+    btn.innerText = "SHARE";
+
+    btn.style.left = "50%";
+    btn.style.top = "50%";
+    btn.style.transform = "translate(-50%, -50%) scale(1.2)";
+
+    btn.onclick = () => shareScore(finalTime);
+  }
+});
+
+// fake buttons
+function spawnFakes(n) {
+  for (let i=0;i<n;i++) {
+    let f = btn.cloneNode(true);
+    f.classList.add("fake");
+    f.innerText = "Fake";
+
+    f.onclick = () => {
+      msg.innerText = "😜 not this one";
+      shake();
+    };
+
+    document.body.appendChild(f);
+
+    f.style.left = Math.random()*window.innerWidth + "px";
+    f.style.top = Math.random()*window.innerHeight + "px";
+  }
+}
+
+// 📤 share
+function shareScore(time) {
+  let text = `I beat this game in ${time}s 😏 Try it!`;
+
+  if (navigator.share) {
+    navigator.share({ text });
+  } else {
+    navigator.clipboard.writeText(text);
+    alert("Copied! Share it 🔥");
+  }
+}
+
+// 🕵️ secret hacker win (press H)
+document.addEventListener("keydown", (e) => {
+  if (e.key.toLowerCase() === "h") {
+    gameWon = true;
+    msg.innerText = "👀 Hacker Mode Activated";
+    btn.innerText = "WINNER";
+    btn.style.left = "50%";
+    btn.style.top = "50%";
+    btn.style.transform = "translate(-50%, -50%) scale(1.2)";
+  }
+});
+</script>
+
+</body>
+</html>
