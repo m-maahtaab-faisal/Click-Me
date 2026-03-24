@@ -1,21 +1,23 @@
 :root { --premium-gold: #00f2ff; --glass-bg: rgba(255, 255, 255, 0.03); --border: rgba(0, 242, 255, 0.2); }
-body { margin: 0; height: 100vh; background: #0f1013; color: #e0e0e0; font-family: sans-serif; display: flex; justify-content: center; align-items: center; overflow: hidden; user-select: none; }
+body { margin: 0; height: 100vh; background: #0f1013; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; display: flex; justify-content: center; align-items: center; overflow: hidden; user-select: none; }
 @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -48%); } to { opacity: 1; transform: translate(-50%, -50%); } }
 @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 @keyframes pulseGlow { 0% { box-shadow: 0 0 20px #00f2ff; } 50% { box-shadow: 0 0 50px #00f2ff; } 100% { box-shadow: 0 0 20px #00f2ff; } }
-
-.center { position: absolute; top: 50%; left: 50%; animation: fadeIn 0.4s ease-out forwards; background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--border); padding: 40px; border-radius: 30px; text-align: center; width: 320px; max-width: 85vw; }
-#gameArea { position: relative; width: 95vw; height: 85vh; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-#gameBtn { position: absolute; padding: 20px 40px; border-radius: 12px; background: linear-gradient(135deg, #00f2ff, #0088ff); color: #000; font-weight: 900; border: none; box-shadow: 0 0 20px rgba(0, 242, 255, 0.5); touch-action: manipulation; }
-#timer { position: absolute; top: 20px; right: 40px; font-size: 2.5rem; font-weight: bold; color: var(--premium-gold); }
-input { background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 15px; border-radius: 10px; color: white; width: 80%; margin-bottom: 20px; text-align: center; }
-button.start-btn, button.action-btn { background: transparent; color: var(--premium-gold); border: 1px solid var(--premium-gold); padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; }
-#popup, #shareModal, #loadingScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 100; flex-direction: column; }
-.popupBox { background: #121417; border: 1px solid var(--premium-gold); padding: 40px; border-radius: 20px; text-align: center; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.winner-box { animation: popIn 0.4s forwards, pulseGlow 2s infinite !important; }
-.spinner { width: 50px; height: 50px; border: 5px solid rgba(0,242,255,0.1); border-top-color: #00f2ff; border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
+
+.center { position: absolute; top: 50%; left: 50%; animation: fadeIn 0.4s ease-out forwards; background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--border); padding: 40px; border-radius: 30px; text-align: center; width: 320px; max-width: 85vw; z-index: 10; }
+#gameArea { position: relative; width: 95vw; height: 85vh; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+#gameBtn { position: absolute; padding: 20px 40px; border-radius: 12px; background: linear-gradient(135deg, #00f2ff, #0088ff); color: #000; font-weight: 900; border: none; box-shadow: 0 0 20px rgba(0, 242, 255, 0.5); touch-action: manipulation; -webkit-tap-highlight-color: transparent; cursor: crosshair; }
+#timer { position: absolute; top: 20px; right: 40px; font-size: 2.5rem; font-weight: bold; color: var(--premium-gold); z-index: 50; }
+input { background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 15px; border-radius: 10px; color: white; width: 80%; margin-bottom: 20px; text-align: center; outline: none; }
+input:focus { border-color: var(--premium-gold); }
+button.start-btn, button.action-btn { background: transparent; color: var(--premium-gold); border: 1px solid var(--premium-gold); padding: 12px 25px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+button.start-btn:hover, button.action-btn:hover { background: var(--premium-gold); color: black; }
+#popup, #shareModal, #loadingScreen { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 100; flex-direction: column; }
+.popupBox { background: #121417; border: 1px solid var(--premium-gold); padding: 40px; border-radius: 20px; text-align: center; animation: popIn 0.3s ease-out; max-width: 90vw; }
+.winner-box { animation: popIn 0.3s forwards, pulseGlow 2s infinite !important; border-color: #00f2ff; }
+.spinner { width: 50px; height: 50px; border: 5px solid rgba(0,242,255,0.1); border-top-color: #00f2ff; border-radius: 50%; animation: spin 1s linear infinite; }
 .share-grid { display: grid; gap: 10px; margin-top: 20px; }
-.share-btn { padding: 12px; border-radius: 8px; border: none; font-weight: bold; color: white; }
+.share-btn { padding: 12px; border-radius: 8px; border: none; font-weight: bold; color: white; cursor: pointer; }
 .wa { background: #25D366; } .tg { background: #0088cc; } .x { background: #000; } .cp { background: #4a4a4a; }
 .particle { position: absolute; border-radius: 50%; background: #fff; pointer-events: none; z-index: 999; }

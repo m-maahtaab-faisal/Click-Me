@@ -10,12 +10,14 @@
 
 <div class="center" id="home">
     <h1 style="letter-spacing: 4px; color: var(--premium-gold); margin-top: 0;">CLICK ME</h1>
-    <div id="scores" style="margin-bottom: 20px; opacity: 0.9; height: 180px; overflow-y: hidden;">Loading Leaderboard...</div>
-    <input id="username" placeholder="ENTER YOUR NAME">
+    <div id="scores" style="margin-bottom: 20px; opacity: 0.9; height: 180px; overflow-y: hidden;">
+        Loading Leaderboard...
+    </div>
+    <input id="username" placeholder="ENTER YOUR NAME" autocomplete="off">
     <br>
     <button class="start-btn" onclick="start()">START GAME</button>
     <div style="margin-top: 15px; font-size: 0.7rem; opacity: 0.6;">
-        <a href="privacy.html" style="color: #00f2ff; text-decoration: none;">Privacy Policy</a>
+        <a href="privacy.html" style="color: #00f2ff; text-decoration: none;">Privacy & Legal</a>
     </div>
 </div>
 
@@ -52,7 +54,7 @@
 
 <div id="loadingScreen">
     <div class="spinner"></div>
-    <div style="margin-top:20px; color:#00f2ff; letter-spacing:4px; font-weight:bold;">INITIALIZING...</div>
+    <div style="margin-top:20px; color:#00f2ff; letter-spacing:4px; font-weight:bold;">INITIALIZING SYSTEM...</div>
 </div>
 
 <script type="module" src="game.js"></script>
